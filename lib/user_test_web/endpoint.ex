@@ -36,6 +36,7 @@ defmodule UserTestWeb.Endpoint do
     key: "_user_test_key",
     signing_salt: "mv03YUX/"
 
+  plug CORSPlug
   plug UserTestWeb.Router
 
   @doc """

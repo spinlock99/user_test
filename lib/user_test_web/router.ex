@@ -1,10 +1,6 @@
 defmodule UserTestWeb.Router do
   use UserTestWeb, :router
 
-  scope "/" do
-    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :user_test, swagger_file: "swagger.json"
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -13,6 +9,10 @@ defmodule UserTestWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+  end
+
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :user_test, swagger_file: "swagger.json"
   end
 
   def swagger_info do

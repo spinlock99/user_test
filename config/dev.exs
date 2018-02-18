@@ -44,3 +44,9 @@ config :user_test, UserTest.Repo,
   database: "user_test_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configure CORS
+config :cors_plug,
+  origin: ["http://localhost:4000", "http://0.0.0.0:4000"],
+  max_age: 86400,
+  methods: ["GET", "POST"]
