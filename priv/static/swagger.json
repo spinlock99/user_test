@@ -1,10 +1,147 @@
 {
   "swagger": "2.0",
-  "paths": {},
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [],
+        "operationId": "UserTestWeb.UserController.index",
+        "description": "List users"
+      }
+    }
+  },
   "info": {
     "version": "0.0.2",
     "title": "User Test App"
   },
   "host": "localhost:4000",
-  "definitions": {}
+  "definitions": {
+    "Users": {
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "meta": {
+          "type": "object",
+          "properties": {
+            "total-pages": {
+              "type": "integer",
+              "description": "The total number of pages available"
+            },
+            "total-count": {
+              "type": "integer",
+              "description": "The total number of items available"
+            }
+          }
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "type": "string",
+              "description": "Link to this page of results"
+            },
+            "prev": {
+              "type": "string",
+              "description": "Link to the previous page of results"
+            },
+            "next": {
+              "type": "string",
+              "description": "Link to the next page of results"
+            },
+            "last": {
+              "type": "string",
+              "description": "Link to the last page of results"
+            },
+            "first": {
+              "type": "string",
+              "description": "Link to the first page of results"
+            }
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserResource"
+          },
+          "description": "Content with [UserResource](#userresource) objects"
+        }
+      },
+      "description": "A page of [UserResource](#userresource) results"
+    },
+    "UserResource": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The JSON-API resource type"
+        },
+        "relationships": {
+          "type": "object",
+          "properties": {}
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "type": "string",
+              "description": "The link to this user resource"
+            }
+          }
+        },
+        "id": {
+          "type": "string",
+          "description": "The JSON-API resource ID"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "User's name"
+            }
+          }
+        }
+      },
+      "description": "A user of the application"
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "links": {
+          "type": "object",
+          "properties": {
+            "self": {
+              "type": "string",
+              "description": "the link that generated the current response document."
+            }
+          }
+        },
+        "included": {
+          "type": "array",
+          "items": {},
+          "description": "Included resources"
+        },
+        "data": {
+          "$ref": "#/definitions/UserResource"
+        }
+      },
+      "description": "A JSON-API document with a single [UserResource](#userresource) resource"
+    }
+  }
 }

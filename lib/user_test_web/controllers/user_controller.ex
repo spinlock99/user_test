@@ -1,10 +1,31 @@
 defmodule UserTestWeb.UserController do
   use UserTestWeb, :controller
+  use PhoenixSwagger
 
   alias UserTest.Accounts
   alias UserTest.Accounts.User
 
   action_fallback UserTestWeb.FallbackController
+
+  def swagger_definitions do
+    %{
+      UserResource: JsonApi.resource do
+        description "A user of the application"
+        attributes do
+          name :string, "User's name", required: true
+        end
+        link :self, "The link to this user resource"
+      end,
+      Users: JsonApi.page(:UserResource),
+      User: JsonApi.single(:UserResource)
+    }
+  end
+
+  swagger_path :index do
+    get "/api/users"
+    description "List users"
+    response 200, "Success"
+  end
 
   def index(conn, _params) do
     users = Accounts.list_users()
