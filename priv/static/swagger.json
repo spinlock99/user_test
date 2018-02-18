@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "paths": {},
   "info": {
-    "version": "0.0.1",
-    "title": "<enter your title>"
+    "version": "0.0.2",
+    "title": "User Test App"
   },
   "host": "localhost:4000",
   "definitions": {}
