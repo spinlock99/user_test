@@ -9,6 +9,9 @@
         "summary": "",
         "responses": {
           "200": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
             "description": "Success"
           }
         },

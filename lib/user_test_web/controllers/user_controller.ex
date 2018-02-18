@@ -24,7 +24,7 @@ defmodule UserTestWeb.UserController do
   swagger_path :index do
     get "/api/users"
     description "List users"
-    response 200, "Success"
+    response 200, "Success", Schema.ref(:Users)
   end
 
   def index(conn, _params) do
