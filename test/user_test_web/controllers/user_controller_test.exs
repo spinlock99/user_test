@@ -29,14 +29,18 @@ defmodule UserTestWeb.UserControllerTest do
   end
 
   describe "create user" do
-    test "renders user when data is valid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), user: @create_attrs
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+    test "renders user when data is valid", %{conn: conn, swagger_schema: swagger_schema} do
+      %{"data" => data} = conn
+                          |> post(user_path(conn, :create), user: @create_attrs)
+                          |> validate_resp_schema(swagger_schema, "User")
+                          |> json_response(201)
+      assert %{"id" => id} = data
 
-      conn = get conn, user_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "name" => "some name"}
+      %{"data" => data} = conn
+                          |> get(user_path(conn, :show, id))
+                          |> validate_resp_schema(swagger_schema, "User")
+                          |> json_response(200)
+      assert data == %{"id" => id, "name" => "some name"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -48,14 +52,18 @@ defmodule UserTestWeb.UserControllerTest do
   describe "update user" do
     setup [:create_user]
 
-    test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user} do
-      conn = put conn, user_path(conn, :update, user), user: @update_attrs
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+    test "renders user when data is valid", %{conn: conn, user: %User{id: id} = user, swagger_schema: swagger_schema} do
+      %{"data" => data} = conn
+                          |> put(user_path(conn, :update, user), user: @update_attrs)
+                          |> validate_resp_schema(swagger_schema, "User")
+                          |> json_response(200)
+      assert %{"id" => ^id} = data
 
-      conn = get conn, user_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "name" => "some updated name"}
+      %{"data" => data} = conn
+                          |> get(user_path(conn, :show, id))
+                          |> validate_resp_schema(swagger_schema, "User")
+                          |> json_response(200)
+      assert data == %{"id" => id, "name" => "some updated name"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
