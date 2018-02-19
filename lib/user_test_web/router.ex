@@ -12,7 +12,9 @@ defmodule UserTestWeb.Router do
   end
 
   scope "/api/swagger" do
-    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :user_test, swagger_file: "swagger.json"
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :user_test,
+                                                swagger_file: "swagger.json",
+                                                disable_validator: true
   end
 
   def swagger_info do

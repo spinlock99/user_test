@@ -49,4 +49,4 @@ config :user_test, UserTest.Repo,
 config :cors_plug,
   origin: ["http://localhost:4000", "http://0.0.0.0:4000"],
   max_age: 86400,
-  methods: ["GET", "POST"]
+  methods: ["DELETE", "GET", "PATCH", "POST"]

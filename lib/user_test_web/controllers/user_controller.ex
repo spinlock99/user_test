@@ -9,27 +9,57 @@ defmodule UserTestWeb.UserController do
 
   def swagger_definitions do
     %{
-      UserResource: JsonApi.resource do
-        description "A user of the application"
-        attributes do
-          name :string, "User's name", required: true
+      User: swagger_schema do
+        title "User"
+        description "A user"
+        properties do
+          user (Schema.new do
+            properties do
+              name :string, "the name of the user", required: true
+            end
+          end)
         end
-        link :self, "The link to this user resource"
+        example %{
+          user: %{
+            name: "Wat?"
+          }
+        }
       end,
-      Users: JsonApi.page(:UserResource),
-      User: JsonApi.single(:UserResource)
+      Users: swagger_schema do
+        title "Users"
+        description "A list of all users"
+        type :array
+        items Schema.ref(:User)
+      end,
+      Error: swagger_schema do
+        title "Errors"
+        description "Error responses from the API"
+        properties do
+          error :string, "The error message", required: true
+        end
+      end
     }
   end
 
   swagger_path :index do
     get "/api/users"
-    description "List users"
+    summary "List users"
     response 200, "Success", Schema.ref(:Users)
   end
 
   def index(conn, _params) do
     users = Accounts.list_users()
     render(conn, "index.json", users: users)
+  end
+
+  swagger_path :create do
+    post "/api/users"
+    summary "Create a new user"
+    parameters do
+      user :body, Schema.ref(:User), "User to add", required: true
+    end
+    response 201, "Ok", Schema.ref(:User)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -41,9 +71,30 @@ defmodule UserTestWeb.UserController do
     end
   end
 
+  swagger_path :show do
+    get "/api/users/{id}"
+    summary "Retrieve a user"
+    parameters do
+      id :path, :string, "The id of the user", required: true
+    end
+    response 200, "Ok", Schema.ref(:User)
+    response 404, "Not found", Schema.ref(:Error)
+  end
+
   def show(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
     render(conn, "show.json", user: user)
+  end
+
+  swagger_path :update do
+    patch "/api/users/{id}"
+    summary "Update an existing user"
+    parameters do
+      id :path, :string, "The id of the user to update", required: true
+      user :body, Schema.ref(:User), "The user details to update"
+    end
+    response 201, "Ok", Schema.ref(:User)
+    response 422, "Unprocessable Entity", Schema.ref(:Error)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
@@ -52,6 +103,16 @@ defmodule UserTestWeb.UserController do
     with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
+  end
+
+  swagger_path :delete do
+    delete "/api/users/{id}"
+    summary "Delete a user"
+    parameters do
+      id :path, :string, "The id of the user", required: true
+    end
+    response 204, "No content"
+    response 404, "Not found"
   end
 
   def delete(conn, %{"id" => id}) do

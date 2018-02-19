@@ -1,12 +1,143 @@
 {
   "swagger": "2.0",
   "paths": {
-    "/api/users": {
+    "/api/users/{id}": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update an existing user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user to update"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "required": false,
+            "name": "user",
+            "in": "body",
+            "description": "The user details to update"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.update",
+        "description": ""
+      },
       "get": {
         "tags": [
           "User"
         ],
-        "summary": "",
+        "summary": "Retrieve a user",
+        "responses": {
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Not found"
+          },
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.show",
+        "description": ""
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a user",
+        "responses": {
+          "404": {
+            "description": "Not found"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.delete",
+        "description": ""
+      }
+    },
+    "/api/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "required": true,
+            "name": "user",
+            "in": "body",
+            "description": "User to add"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.create",
+        "description": ""
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List users",
         "responses": {
           "200": {
             "schema": {
@@ -17,7 +148,7 @@
         },
         "parameters": [],
         "operationId": "UserTestWeb.UserController.index",
-        "description": "List users"
+        "description": ""
       }
     }
   },
@@ -28,84 +159,18 @@
   "host": "localhost:4000",
   "definitions": {
     "Users": {
-      "type": "object",
-      "required": [
-        "data"
-      ],
-      "properties": {
-        "meta": {
-          "type": "object",
-          "properties": {
-            "total-pages": {
-              "type": "integer",
-              "description": "The total number of pages available"
-            },
-            "total-count": {
-              "type": "integer",
-              "description": "The total number of items available"
-            }
-          }
-        },
-        "links": {
-          "type": "object",
-          "properties": {
-            "self": {
-              "type": "string",
-              "description": "Link to this page of results"
-            },
-            "prev": {
-              "type": "string",
-              "description": "Link to the previous page of results"
-            },
-            "next": {
-              "type": "string",
-              "description": "Link to the next page of results"
-            },
-            "last": {
-              "type": "string",
-              "description": "Link to the last page of results"
-            },
-            "first": {
-              "type": "string",
-              "description": "Link to the first page of results"
-            }
-          }
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/UserResource"
-          },
-          "description": "Content with [UserResource](#userresource) objects"
-        }
+      "type": "array",
+      "title": "Users",
+      "items": {
+        "$ref": "#/definitions/User"
       },
-      "description": "A page of [UserResource](#userresource) results"
+      "description": "A list of all users"
     },
-    "UserResource": {
+    "User": {
       "type": "object",
+      "title": "User",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "The JSON-API resource type"
-        },
-        "relationships": {
-          "type": "object",
-          "properties": {}
-        },
-        "links": {
-          "type": "object",
-          "properties": {
-            "self": {
-              "type": "string",
-              "description": "The link to this user resource"
-            }
-          }
-        },
-        "id": {
-          "type": "string",
-          "description": "The JSON-API resource ID"
-        },
-        "attributes": {
+        "user": {
           "type": "object",
           "required": [
             "name"
@@ -113,38 +178,31 @@
           "properties": {
             "name": {
               "type": "string",
-              "description": "User's name"
+              "description": "the name of the user"
             }
           }
         }
       },
-      "description": "A user of the application"
+      "example": {
+        "user": {
+          "name": "Wat?"
+        }
+      },
+      "description": "A user"
     },
-    "User": {
+    "Error": {
       "type": "object",
+      "title": "Errors",
       "required": [
-        "data"
+        "error"
       ],
       "properties": {
-        "links": {
-          "type": "object",
-          "properties": {
-            "self": {
-              "type": "string",
-              "description": "the link that generated the current response document."
-            }
-          }
-        },
-        "included": {
-          "type": "array",
-          "items": {},
-          "description": "Included resources"
-        },
-        "data": {
-          "$ref": "#/definitions/UserResource"
+        "error": {
+          "type": "string",
+          "description": "The error message"
         }
       },
-      "description": "A JSON-API document with a single [UserResource](#userresource) resource"
+      "description": "Error responses from the API"
     }
   }
 }
