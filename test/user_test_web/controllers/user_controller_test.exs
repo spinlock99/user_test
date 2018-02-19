@@ -1,5 +1,6 @@
 defmodule UserTestWeb.UserControllerTest do
   use UserTestWeb.ConnCase
+  use PhoenixSwagger.SchemaTest, "priv/static/swagger.json"
 
   alias UserTest.Accounts
   alias UserTest.Accounts.User
@@ -18,9 +19,12 @@ defmodule UserTestWeb.UserControllerTest do
   end
 
   describe "index" do
-    test "lists all users", %{conn: conn} do
-      conn = get conn, user_path(conn, :index)
-      assert json_response(conn, 200)["data"] == []
+    test "lists all users", %{conn: conn, swagger_schema: swagger_schema} do
+      %{"data" => data} = conn
+                        |> get(user_path(conn, :index))
+                        |> validate_resp_schema(swagger_schema, "Users")
+                        |> json_response(200)
+      assert data == []
     end
   end
 

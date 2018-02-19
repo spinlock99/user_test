@@ -28,8 +28,12 @@ defmodule UserTestWeb.UserController do
       Users: swagger_schema do
         title "Users"
         description "A list of all users"
-        type :array
-        items Schema.ref(:User)
+        properties do
+          data (Schema.new do
+            type :array
+            items Schema.ref(:User)
+          end)
+        end
       end,
       Error: swagger_schema do
         title "Errors"
