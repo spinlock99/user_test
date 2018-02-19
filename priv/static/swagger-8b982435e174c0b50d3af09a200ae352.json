@@ -1,0 +1,208 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/api/users/{id}": {
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update an existing user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user to update"
+          },
+          {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "required": false,
+            "name": "user",
+            "in": "body",
+            "description": "The user details to update"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.update",
+        "description": ""
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieve a user",
+        "responses": {
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Not found"
+          },
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.show",
+        "description": ""
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a user",
+        "responses": {
+          "404": {
+            "description": "Not found"
+          },
+          "204": {
+            "description": "No content"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.delete",
+        "description": ""
+      }
+    },
+    "/api/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "responses": {
+          "422": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unprocessable Entity"
+          },
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Ok"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "required": true,
+            "name": "user",
+            "in": "body",
+            "description": "User to add"
+          }
+        ],
+        "operationId": "UserTestWeb.UserController.create",
+        "description": ""
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "List users",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Success"
+          }
+        },
+        "parameters": [],
+        "operationId": "UserTestWeb.UserController.index",
+        "description": ""
+      }
+    }
+  },
+  "info": {
+    "version": "0.0.2",
+    "title": "User Test App"
+  },
+  "host": "localhost:4000",
+  "definitions": {
+    "Users": {
+      "type": "array",
+      "title": "Users",
+      "items": {
+        "$ref": "#/definitions/User"
+      },
+      "description": "A list of all users"
+    },
+    "User": {
+      "type": "object",
+      "title": "User",
+      "properties": {
+        "user": {
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "the name of the user"
+            }
+          }
+        }
+      },
+      "example": {
+        "user": {
+          "name": "Wat?"
+        }
+      },
+      "description": "A user"
+    },
+    "Error": {
+      "type": "object",
+      "title": "Errors",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "The error message"
+        }
+      },
+      "description": "Error responses from the API"
+    }
+  }
+}

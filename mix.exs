@@ -40,6 +40,7 @@ defmodule UserTest.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:ex_json_schema, "~> 0.5"},
+      {:distillery, "~> 1.5", runtime: false},
       {:cowboy, "~> 1.0"},
       {:cors_plug, "~> 1.5"}
     ]
