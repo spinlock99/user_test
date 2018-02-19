@@ -16,12 +16,14 @@ defmodule UserTestWeb.UserController do
           user (Schema.new do
             properties do
               name :string, "the name of the user", required: true
+              id :integer, "unique identifier for the user", required: true
             end
           end)
         end
         example %{
           user: %{
-            name: "Wat?"
+            name: "Wat?",
+            id: 1
           }
         }
       end,

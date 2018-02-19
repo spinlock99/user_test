@@ -178,19 +178,25 @@
         "user": {
           "type": "object",
           "required": [
+            "id",
             "name"
           ],
           "properties": {
             "name": {
               "type": "string",
               "description": "the name of the user"
+            },
+            "id": {
+              "type": "integer",
+              "description": "unique identifier for the user"
             }
           }
         }
       },
       "example": {
         "user": {
-          "name": "Wat?"
+          "name": "Wat?",
+          "id": 1
         }
       },
       "description": "A user"
